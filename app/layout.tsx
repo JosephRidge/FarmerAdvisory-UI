@@ -1,5 +1,9 @@
 import type { Metadata } from "next"
 import Head from 'next/head'
+import {Navigation} from './components/ui/nav/nav'
+import { Text } from "./components/ui/text"
+import Link from 'next/link'
+
 // import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -31,6 +35,23 @@ export default function RootLayout({
       <body
         
       >
+        <Navigation>
+          <div>
+          <Link href="/">
+          <Text variant={"subtitle"}> farmerVICE</Text></Link></div>
+          
+          <div> 
+          <Link href="/dashboard">
+          <Text variant={"small"}> dashboard</Text>
+          </Link>
+        
+          <Link href="/dashboard">
+          <Text variant={"small"}> dashboard</Text>
+          </Link>
+          
+          </div>
+        
+        </Navigation>
         {children}
 
       {/* <footer className="bg-white bottom-0 w-screen text-black ">
