@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { CardTile } from "./components/ui/card"
 import { Text } from "./components/ui/text"
 import { Badge } from "./components/ui/badge"
@@ -16,8 +15,7 @@ export default function Home() {
 
         {/* <input */}
 
-<ChatInput onSend={()=>{console.log("hellow World")}}>
-
+<ChatInput> 
 </ChatInput>
 </main>
     </div>
