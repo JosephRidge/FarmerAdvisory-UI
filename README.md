@@ -1,3 +1,12 @@
+# Approach:
+
+![image](https://github.com/user-attachments/assets/47eb4f9e-f7aa-43f0-80f0-5885f24f24e9)
+
+# Design: 
+![image](https://github.com/user-attachments/assets/1b2ca77e-a161-4f59-8730-e75580f87056)
+
+
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
