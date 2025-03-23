@@ -135,4 +135,13 @@ body {
     font-weight: 900;
     font-style: italic;
   }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;  
+    scrollbar-width: none;  
+  }
 }

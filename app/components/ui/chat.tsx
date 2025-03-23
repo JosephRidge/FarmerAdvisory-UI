@@ -6,11 +6,11 @@ import { cn } from "../../lib/utils";
 import { IconSend } from "../icons/icon";
 
 const inputVariants = cva(
-  "w-full text-black resize-none rounded-lg focus:outline-none focus:ring-none p-2",
+  "w-full max-h-48 h-48 overflow-y-scroll no-scrollbar text-black resize rounded-lg focus:outline-none focus:ring-none p-2",
   {
     variants: {
       variant: {
-        default: "focus:ring-none",
+        default: " focus:ring-none",
         error: "border-red-500 focus:ring-red-500",
         success: "border-green-500 focus:ring-green-500",
       },
@@ -29,7 +29,7 @@ const inputVariants = cva(
 
 export interface ChatInputProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement>,
-    VariantProps<typeof inputVariants> {
+  VariantProps<typeof inputVariants> {
   asChild?: boolean;
 }
 
@@ -64,7 +64,7 @@ const ChatInput = forwardRef<HTMLTextAreaElement, ChatInputProps>(
     };
 
     return (
-      <div className=" w-1/2 max-w-full items-end gap-2 p-3 bg-gray-200 rounded-xl">
+      <div className=" w-1/2 h-fit mx-auto max-w-full items-end gap-2 p-3 bg-gray-200 rounded-xl">
         <textarea
           ref={(el) => {
             textareaRef.current = el;
@@ -80,12 +80,15 @@ const ChatInput = forwardRef<HTMLTextAreaElement, ChatInputProps>(
           {...props}
         />
 
-        <button
-          onClick={sendMessage}
-          className="px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition"
-        >
-        <IconSend/>
-        </button>
+        <div className="flex justify-end">
+          <button
+            onClick={sendMessage}
+            className=" bg-gray-50 text-white rounded-full hover:bg-gray-800 transition p-3"
+          >
+            <IconSend />
+          </button>
+        </div>
+
       </div>
     );
   }
