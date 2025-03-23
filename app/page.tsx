@@ -10,7 +10,7 @@ export default function Home() {
         {/* chat history */}
         <CardTile variant={"query"}  >
           <Badge className="flex">Question</Badge>
-          <Text variant={"small"} className="text-black"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi ad voluptatum, culpa blanditiis sint similique iure officiis molestiae praesentium exercitationem beatae tempore nihil nesciunt esse tempora repellat quis ratione quae. </Text>
+          <Text variant={"small"} className="text-black"> Lorem pore nihil nesciunt esse tempora repellat quis ratione quae. </Text>
         </CardTile>
 
 
