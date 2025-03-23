@@ -6,11 +6,11 @@ import { cn } from "../../lib/utils";
 import { IconSend } from "../icons/icon";
 
 const inputVariants = cva(
-  "w-full max-h-48 h-48 overflow-y-scroll no-scrollbar text-black resize rounded-lg focus:outline-none focus:ring-none p-2",
+  "w-full max-h-32 h-fit resize-none overflow-y-scroll no-scrollbar text-black rounded-lg focus:outline-none focus:ring-none p-2",
   {
     variants: {
       variant: {
-        default: " focus:ring-none",
+        default: "focus:ring-none",
         error: "border-red-500 focus:ring-red-500",
         success: "border-green-500 focus:ring-green-500",
       },
@@ -83,9 +83,9 @@ const ChatInput = forwardRef<HTMLTextAreaElement, ChatInputProps>(
         <div className="flex justify-end">
           <button
             onClick={sendMessage}
-            className=" bg-gray-50 text-white rounded-full hover:bg-gray-800 transition p-3"
+            className="cursor-pointer bg-gray-50 text-white rounded-full hover:bg-gray-800 transition p-3"
           >
-            <IconSend />
+            <IconSend/>
           </button>
         </div>
 
