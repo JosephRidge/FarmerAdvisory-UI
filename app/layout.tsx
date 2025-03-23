@@ -29,9 +29,9 @@ export default function RootLayout({
       >
         {children}
 
-      <footer className="bg-white bottom-0 w-screen text-black ">
+      {/* <footer className="bg-white bottom-0 w-screen text-black ">
        @copyright 2025
-      </footer>
+      </footer> */}
       </body>
     </html>
   );
