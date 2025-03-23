@@ -9,7 +9,7 @@ export default function Home() {
     <div>
       <main>
         <div>
-          <Text>
+          <Text variant={"title"}>
             {WELCOME_TEXT}
           </Text>
         </div>
