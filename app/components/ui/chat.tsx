@@ -1,0 +1,93 @@
+"use client"
+
+import { forwardRef, useState, useRef } from "react" 
+import { cva, type VariantProps } from "class-variance-authority" 
+import { cn } from "../../lib/utils" 
+
+const inputVariants = cva(
+  "w-full resize-none border rounded-lg focus:outline-none focus:ring-2 p-2", 
+  {
+    variants: {
+      variant: {
+        default: "border-gray-300 focus:ring-blue-500",
+        error: "border-red-500 focus:ring-red-500",
+        success: "border-green-500 focus:ring-green-500",
+      },
+      size: {
+        sm: "text-sm py-1 px-2",
+        md: "text-base py-2 px-3",
+        lg: "text-lg py-3 px-4",a
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "md",
+    },
+  }
+) 
+
+export interface ChatInputProps
+  extends React.TextareaHTMLAttributes<HTMLTextAreaElement>,
+    VariantProps<typeof inputVariants> { 
+  asChild?: boolean;
+}
+
+const ChatInput = forwardRef<HTMLTextAreaElement, ChatInputProps>(
+  ({ className, variant, size, ...props }, ref) => {
+    const [message, setMessage] = useState<string>("") 
+    const textareaRef = useRef<HTMLTextAreaElement | null>(null) 
+
+    const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      setMessage(e.target.value) 
+      if (textareaRef.current) {
+        textareaRef.current.style.height = "auto" 
+        textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px` 
+      }
+    } 
+
+    // const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    //   if (e.key === "Enter" && !e.shiftKey) {
+    //     e.preventDefault() 
+    //     sendMessage() 
+    //   }
+    // } 
+
+//     const sendMessage = () => {
+//       if (message.trim()) {
+// n        setMessage("");
+//         if (textareaRef.current) {
+//           textareaRef.current.style.height = "40px" 
+//         }
+//       }
+//     } 
+
+    return (
+      <div className="flex items-end gap-2 p-3 bg-white shadow-md rounded-xl">
+        <textarea
+          ref={(el) => {
+            textareaRef.current = el 
+            if (typeof ref === "function") ref(el) 
+            else if (ref) ref.current = el 
+          }}
+          value={message}
+          onChange={handleInput}
+          onKeyDown={handleKeyDown}
+          placeholder="Type your message..."
+          className={cn(inputVariants({ variant, size, className }))}
+          rows={1}
+          {...props}
+        />
+        {/* <button
+          onClick={sendMessage}
+          className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+        >
+          Send
+        </button> */}
+      </div>
+    ) 
+  }
+) 
+
+ChatInput.displayName = "ChatInput" 
+
+export { ChatInput, inputVariants } 
