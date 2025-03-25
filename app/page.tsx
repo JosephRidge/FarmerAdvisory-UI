@@ -5,8 +5,9 @@ import { Text } from "./components/ui/text"
 import { Badge } from "./components/ui/badge"
 import { ChatInput } from "./components/ui/chat/chat-input"
 import { ChatMessage } from "./components/ui/chat/chat-message"
-import { IconThumbsUp } from "./components/icons/icon"
+import { IconThumbsUp, IconThumbsDown } from "./components/icons/icon"
 import { WELCOME_TEXT, QUERY_TITLE, BADGE_TEXT, SEARCHING_TEXT, COMMON_QUESTIONS } from "./lib/constants"
+import { env } from "node:process"
 
 export default function Home() {
   // const messages = [{farmer:"Hello Junior", ai:"How can I help you?"}] 
@@ -14,6 +15,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false)
   const [showWelcome, setShowWelcome] = useState(true)
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const [socket, setSocket] = useState<WebSocket | null>(null)
 
 
 
@@ -28,7 +30,7 @@ export default function Home() {
     ])
 
     try {
-      const response = await fetch("https://your-api-endpoint.com/chat", {
+      const response = await fetch(`${process.env.BASE_URL}/ws`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query: question }),
@@ -92,15 +94,24 @@ export default function Home() {
           </ChatMessage>
         </div>
         <div className="flex justify-start">
-          <ChatMessage className="bg-gray-900 text-light p-2 max-w-xs">
+          <ChatMessage className="bg-gray-50 text-black p-2 max-w-xs">
             <div>{msg.ai}</div>
-            
-            <button
-            onClick={()=>{}}
-            className="cursor-pointer  bg-gray-50 text-white rounded-full hover:bg-gray-800 transition p-2"
-          >
-            <IconThumbsUp className="w-6 h-6"/>
-          </button>
+
+            <div className="flex pt-3">
+            <button className="relative border border-gray-300 group cursor-pointer bg-gray-50 text-white rounded-full hover:bg-gray-300 transition w-fit  scale-75 p-2 overflow-visible">
+              <IconThumbsUp className="w-2  h-2" />
+              <div className="absolute -bottom-12  w-fit  bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition duration-200">
+                Good response
+              </div>
+            </button>
+
+            <button className="relative border border-gray-300 group cursor-pointer bg-gray-50 text-white rounded-full hover:bg-gray-300 transition w-fit  scale-75 p-2 overflow-visible">
+              <IconThumbsDown className="w-2  h-2" />
+              <div className="absolute -bottom-12  w-fit  bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition duration-200">
+                Bad response
+              </div>
+            </button>
+            </div> 
           </ChatMessage>
         </div>
       </div>
@@ -108,8 +119,7 @@ export default function Home() {
   }
 
   return (
-    <main className="overflow-hidden">
-      {/* {showWelcome && <div>Element to show or hide</div>} */}
+    <main className="overflow-hi dden">
       {/* Welcome Text */}
       {showWelcome && <div className="w-full justify-end"><Text variant={"subtitle"} className="text-2xl text-black text-center ">{WELCOME_TEXT}</Text></div>}
 
@@ -128,6 +138,8 @@ export default function Home() {
       <div className="w-1/2 mx-auto fixed bottom-0 right-0 left-0 my-10 flex justify-start">
         <ChatInputSection />
       </div>
+
+
     </main>
   )
 }
