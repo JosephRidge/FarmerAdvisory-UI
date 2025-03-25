@@ -2,7 +2,7 @@ import { forwardRef } from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "../../../lib/utils"
 
-const navVariant = cva(`inline-flex items-center justify-between  `, {
+const navVariant = cva(`inline-flex items-center justify-between sticky top-0 `, {
   variants: {
     variant: {
       circle: " text-xs ",

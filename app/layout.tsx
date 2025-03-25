@@ -1,21 +1,9 @@
 import type { Metadata } from "next"
 import Head from 'next/head'
-import {Navigation} from './components/ui/nav/nav'
+import { Navigation } from './components/ui/nav/nav'
 import { Text } from "./components/ui/text"
 import Link from 'next/link'
-
-// import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-
-// const geistSans = Geist({
-//   variable: "--font-geist-sans",
-//   subsets: ["latin"],
-// });
-
-// const geistMono = Geist_Mono({
-//   variable: "--font-geist-mono",
-//   subsets: ["latin"],
-// });
 
 export const metadata: Metadata = {
   title: "FarmerVICE",
@@ -32,31 +20,25 @@ export default function RootLayout({
       <Head>
         <title>FarmerVice</title>
       </Head>
-      <body
-        
-      >
+      <body>
         <Navigation>
           <div>
-          <Link href="/">
-          <Text variant={"subtitle"}> farmerVICE</Text></Link></div>
-          
-          <div> 
-          <Link href="/dashboard">
-          <Text variant={"small"}> dashboard</Text>
-          </Link>
-        
-          <Link href="/dashboard">
-          <Text variant={"small"}> dashboard</Text>
-          </Link>
-          
-          </div>
-        
-        </Navigation>
-        {children}
+            <Link href="/">
+              <Text variant={"subtitle"}> farmerVICE</Text></Link></div>
 
-      {/* <footer className="bg-white bottom-0 w-screen text-black ">
+          <div>
+            <Link href="/login">
+              <Text variant={"small"}> login</Text>
+            </Link>
+          </div>
+        </Navigation>
+        <div className="w-screen py-10">
+          {children}
+        </div>
+
+        <footer className="bg-white bottom-0 w-screen text-white bg-black ">
        @copyright 2025
-      </footer> */}
+      </footer>
       </body>
     </html>
   );

@@ -6,13 +6,13 @@ const textVariant = cva(`inline-flex items-center justify-center`, {
   variants: {
     variant: {
       title: "poppins-bold text-2xl ",
-      subtitle: "poppins-semibold  text-lg ",
-      small: "leading-7  font-light text-lg",
+      subtitle: "poppins-semibold font-light text-lg ",
+      small: "leading-7 font-light text-lg md:text-base",
       default: "poppins-regular text-sm ",
     },
     size: {
-      default: "px-2 py-2",
-      sm: "px-2",
+      default: "p-2 md:p-1",
+      sm: "px-2 text-sm",
       lg: "px-2",
       icon: "w-8 p-0",
     },

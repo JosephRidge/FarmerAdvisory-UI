@@ -2,11 +2,12 @@
 
 import { forwardRef, useState, useRef } from "react";
 import { cva, type VariantProps } from "class-variance-authority";
-import { cn } from "../../lib/utils";
-import { IconSend } from "../icons/icon";
+import { cn } from "../../../lib/utils";
+import { IconSend } from "../../icons/icon";
+import {QUERY_TEXT} from "../../../lib/constants" 
 
 const inputVariants = cva(
-  "w-full max-h-32 h-fit resize-none overflow-y-scroll no-scrollbar text-black rounded-lg focus:outline-none focus:ring-none p-2",
+  "max-h-32 h-fit resize-none overflow-y-scroll no-scrollbar text-black rounded-lg focus:outline-none focus:ring-none p-2",
   {
     variants: {
       variant: {
@@ -16,7 +17,7 @@ const inputVariants = cva(
       },
       size: {
         sm: "text-sm py-1 px-2",
-        md: "text-base py-2 px-3",
+        md: "text-base w-full py-2 px-3",
         lg: "text-lg py-3 px-4",
       },
     },
@@ -31,10 +32,11 @@ export interface ChatInputProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement>,
   VariantProps<typeof inputVariants> {
   asChild?: boolean;
+  onSendMessage: (message: string) => void; 
 }
 
 const ChatInput = forwardRef<HTMLTextAreaElement, ChatInputProps>(
-  ({ className, variant, size, ...props }, ref) => {
+  ({ className, variant, size, onSendMessage,...props }, ref) => {
     const [message, setMessage] = useState<string>("");
     const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
@@ -56,7 +58,7 @@ const ChatInput = forwardRef<HTMLTextAreaElement, ChatInputProps>(
     const sendMessage = () => {
       if (message.trim()) {
         console.log("Sending message:", message);
-        setMessage(""); // Reset input after sending
+        onSendMessage(message); // Reset input after sending
         if (textareaRef.current) {
           textareaRef.current.style.height = "40px";
         }
@@ -64,7 +66,7 @@ const ChatInput = forwardRef<HTMLTextAreaElement, ChatInputProps>(
     };
 
     return (
-      <div className=" w-1/2 h-fit mx-auto max-w-full items-end gap-2 p-3 bg-gray-200 rounded-xl">
+      <div className="w-screen h-fit md:flex  mx-auto items-end gap-2 p-3 bg-gray-200 rounded-xl">
         <textarea
           ref={(el) => {
             textareaRef.current = el;
@@ -74,7 +76,7 @@ const ChatInput = forwardRef<HTMLTextAreaElement, ChatInputProps>(
           value={message}
           onChange={handleInput}
           onKeyDown={handleKeyDown}
-          placeholder="Type your message..."
+          placeholder={QUERY_TEXT}
           className={cn(inputVariants({ variant, size, className }))}
           rows={1}
           {...props}
