@@ -1,5 +1,5 @@
 'use client'
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { CardTile } from "./components/ui/card"
 import { Text } from "./components/ui/text"
 import { Badge } from "./components/ui/badge"
@@ -8,64 +8,123 @@ import { ChatMessage } from "./components/ui/chat/chat-message"
 import { IconThumbsUp, IconThumbsDown } from "./components/icons/icon"
 import { WELCOME_TEXT, QUERY_TITLE, BADGE_TEXT, SEARCHING_TEXT, COMMON_QUESTIONS } from "./lib/constants"
 import { env } from "node:process"
+import ReactMarkdown from "react-markdown";
 
 export default function Home() {
   // const messages = [{farmer:"Hello Junior", ai:"How can I help you?"}] 
   const [messages, setMessages] = useState<{ farmer: string, ai: string }[]>([])
   const [loading, setLoading] = useState(false)
-  const [showWelcome, setShowWelcome] = useState(true)
-  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const [showWelcome, setShowWelcome] = useState(true) 
   const [socket, setSocket] = useState<WebSocket | null>(null)
 
+  const socketRef = useRef<WebSocket | null>(null);
 
-
+  useEffect(() => {
+    if (!socketRef.current) {
+      const ws = new WebSocket("ws://localhost:8000/ws");
+  
+      ws.onopen = () => {
+        console.log("✅ WebSocket Connected");
+        setSocket(ws);  // <-- Update state when connected
+      };
+  
+      ws.onmessage = (event) => {
+        console.log("📥 Received:", event.data);
+        const data = JSON.parse(event.data);
+        setMessages((prevMessages) =>
+          prevMessages.map((msg) =>
+            msg.farmer === data.query ? { ...msg, ai: data.answer } : msg
+          )
+        );
+        setLoading(false)
+      };
+  
+      ws.onerror = (error) => {
+        console.error("❌ WebSocket Error:", error);
+      };
+  
+      ws.onclose = () => {
+        console.warn("⚠️ WebSocket Closed");
+        setSocket(null);  // Reset socket state
+        socketRef.current = null;
+      };
+  
+      socketRef.current = ws; // Assign WebSocket instance
+    }
+  
+    return () => {
+      socketRef.current?.close();
+    };
+  }, []);
+  
+  
   async function handleQuery(question: string) {
-    setLoading(true)
-    setShowWelcome(false)
+    if (!socket || socket.readyState !== WebSocket.OPEN) {
+      console.error("WebSocket not connected.");
+      return;
+    }
 
-    // Optimistically update the chat with the farmer's message
+    setLoading(true);
+    setShowWelcome(false);
+
+    // Optimistically update the chat with farmer's message
     setMessages((prevMessages) => [
       ...prevMessages,
       { farmer: question, ai: "Thinking..." }, // Placeholder response
-    ])
+    ]);
 
-    try {
-      const response = await fetch(`${process.env.BASE_URL}/ws`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query: question }),
-      })
-
-      if (!response.ok) throw new Error("Failed to fetch response")
-
-      const data = await response.json()
-
-      // Replace placeholder with real AI response
-      setMessages((prevMessages) =>
-        prevMessages.map((msg) =>
-          msg.farmer === question ? { ...msg, ai: data.answer } : msg
-        )
-      )
-    } catch (error) {
-      console.error("Error fetching response:", error)
-
-      // Show error message in chat
-      setMessages((prevMessages) =>
-        prevMessages.map((msg) =>
-          msg.farmer === question ? { ...msg, ai: "Sorry, something went wrong. Try again!" } : msg
-        )
-      )
-    } finally {
-      setLoading(false)
-    }
+    // Send the query through WebSocket
+    socket.send(JSON.stringify({ query: question }));
   }
+
+
+  // async function handleQuery(question: string) {
+  //   setLoading(true)
+  //   setShowWelcome(false)
+
+  //   // Optimistically update the chat with the farmer's message
+  //   setMessages((prevMessages) => [
+  //     ...prevMessages,
+  //     { farmer: question, ai: "Thinking..." }, // Placeholder response
+  //   ])
+
+  //   try {
+  //     const response = await fetch(`${process.env.BASE_URL}/ws`, {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({ query: question }),
+  //     })
+
+  //     if (!response.ok) throw new Error("Failed to fetch response")
+
+  //     const data = await response.json()
+
+  //     // Replace placeholder with real AI response
+  //     setMessages((prevMessages) =>
+  //       prevMessages.map((msg) =>
+  //         msg.farmer === question ? { ...msg, ai: data.answer } : msg
+  //       )
+  //     )
+  //   } catch (error) {
+  //     console.error("Error fetching response:", error)
+
+  //     // Show error message in chat
+  //     setMessages((prevMessages) =>
+  //       prevMessages.map((msg) =>
+  //         msg.farmer === question ? { ...msg, ai: "Sorry, something went wrong. Try again!" } : msg
+  //       )
+  //     )
+  //   } finally {
+  //     setLoading(false)
+  //   }
+  // }
 
   function ChatInputSection() {
     if (loading) {
       return (
-        <div className="relative flex size-6">
-          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
-          <span className="relative inline-flex size-6 rounded-full bg-green-500"></span>
+        <div className="relative flex   w-1/2">
+          <span className="absolute inline-flex h-5 w-5 animate-ping rounded-full bg-green-400  "></span>
+          <span className="relative inline-flex h-4 w-4   rounded-full bg-green-500"></span>
           <Text variant={"default"} className="text-center text-green-500 leading-6 tracking-widest mx-2 my-3 animate-pulse">
             {SEARCHING_TEXT}
           </Text>
@@ -73,7 +132,7 @@ export default function Home() {
       )
     }
 
-    return <ChatInput onSendMessage={handleQuery} />
+    return <ChatInput onSendMessage={handleQuery} className=""/>
   }
 
   function renderCommonQuestions() {
@@ -87,19 +146,19 @@ export default function Home() {
 
   function renderChatMessages() {
     return messages.map((msg, index) => (
-      <div key={index} className="flex flex-col ">
+      <div key={index} className="flex flex-col">
         <div className="flex justify-end">
-          <ChatMessage variant={"farmer"} className="bg-green-200 text-black  max-w-xs">
+          <ChatMessage variant={"farmer"}size={"sm"}  >
             <div>{msg.farmer}</div>
           </ChatMessage>
         </div>
         <div className="flex justify-start">
-          <ChatMessage className="bg-gray-50 text-black p-2 max-w-xs">
-            <div>{msg.ai}</div>
+          <ChatMessage className="text-black " >
+            <div>  <ReactMarkdown>{msg.ai}</ReactMarkdown></div>
 
             <div className="flex pt-3">
             <button className="relative border border-gray-300 group cursor-pointer bg-gray-50 text-white rounded-full hover:bg-gray-300 transition w-fit  scale-75 p-2 overflow-visible">
-              <IconThumbsUp className="w-2  h-2" />
+              <IconThumbsUp className="w-2 h-2"/>
               <div className="absolute -bottom-12  w-fit  bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition duration-200">
                 Good response
               </div>
@@ -119,15 +178,15 @@ export default function Home() {
   }
 
   return (
-    <main className="overflow-hi dden">
+    <main className=""> 
       {/* Welcome Text */}
-      {showWelcome && <div className="w-full justify-end"><Text variant={"subtitle"} className="text-2xl text-black text-center ">{WELCOME_TEXT}</Text></div>}
+      {showWelcome && <div ><Text variant={"subtitle"} className="text-2xl text-black text-center ">{WELCOME_TEXT}</Text></div>}
 
       {/* Common Questions */}
       {showWelcome && <div className="flex my-16 md:my-10 justify-center">{renderCommonQuestions()}</div>}
 
       {/* Chat History */}
-      {!showWelcome && <div className="px-48 h-[28em] mx-10 overflow-y-scroll smooth">{renderChatMessages()}</div>}
+      {!showWelcome && <div className="px-4 md:px-7 md:mx-40 lg:mx-80 h-[70vh] overflow-y-auto scrollbar-hide">{renderChatMessages()}</div>}
 
       {/* Query Title */}
       {showWelcome && <div className="flex justify-center my-8">
@@ -135,7 +194,7 @@ export default function Home() {
       </div>}
 
       {/* Chat Input */}
-      <div className="w-1/2 mx-auto fixed bottom-0 right-0 left-0 my-10 flex justify-start">
+      <div className=" mx-auto w-1/2 fixed bottom-0 right-0 left-0 my-10 flex justify-start">
         <ChatInputSection />
       </div>
 

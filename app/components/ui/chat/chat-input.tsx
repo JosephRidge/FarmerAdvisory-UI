@@ -11,7 +11,7 @@ const inputVariants = cva(
   {
     variants: {
       variant: {
-        default: "focus:ring-none",
+        default: "focus:ring-none  my-auto",
         error: "border-red-500 focus:ring-red-500",
         success: "border-green-500 focus:ring-green-500",
       },

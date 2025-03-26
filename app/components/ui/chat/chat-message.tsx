@@ -7,13 +7,13 @@ const chatMessageVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-gray-600 rounded-br-4xl ",
-        farmer:"bg-gray-100 rounded-bl-4xl rounded-br-md",
+        default: "rounded-br-4xl ",
+        farmer:"rounded-bl-4xl rounded-br-md",
         query:"bg-green-100 hover:bg-green-200 hover:cursor-pointer grid justify-start",   
       },
       size: {
-        default: "sm:max-w-1/4 md:max-w-1/2 w-fit h-fit p-2 md:p-6 m-4 md:m-2",
-        sm: "rounded-md px-3 m-3",
+        default: "sm:max-w-1/3 md:max-w-2/3 w-fit h-fit p-2 md:p-10 m-4 md:m-4",
+        sm: " p-3 m-3 bg-green-200 text-black  ",
         lg: " rounded-md px-8 m-2",
         icon: " p-0",
       },
