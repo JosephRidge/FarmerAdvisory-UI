@@ -9,7 +9,7 @@ const navVariant = cva(`inline-flex items-center justify-between sticky top-0 `,
       default: "bg-black ",
     },
     size: {
-      default: "w-screen py-4 px-6",
+      default: "w-screen py-4 md:px-40 lg:px-80  ",
       sm: "px-2",
       lg: "px-2",
       icon: "w-8 p-0",

@@ -21,7 +21,7 @@ export default function RootLayout({
         <title>FarmerVice</title>
       </Head>
       <body>
-        <Navigation>
+        <Navigation >
           <div>
             <Link href="/">
               <Text variant={"subtitle"}> farmerVICE</Text></Link></div>
