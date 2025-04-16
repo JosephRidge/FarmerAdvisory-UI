@@ -7,6 +7,7 @@ const badgeVariant = cva(`inline-flex items-center justify-center `, {
     variant: {
       circle: "inline-flex items-center rounded-full bg-gray px-2 py-1 text-xs font-medium text-green-600 ring-1 ring-green-500/10 ring-inset",
       default: "inline-flex items-center bg-green-300 rounded-md text-black px-2 py-1 text-xs font-medium",
+      callToAction: "inline-flex items-center bg-gray-300 rounded-md text-black px-2 py-1 text-xs font-medium",
     },
     size: {
       default: "w-fit px-4 py-2",

@@ -2,7 +2,8 @@
 
 import * as React from "react"; 
 
-const WELCOME_TEXT = "Welcome to FarmerVICE a place to learn what the government is saying about livestock rearing and emissionshow to reduce rear livestock better, get better yields and reduce livestock emissions"
+const WELCOME_TEXT = "Welcome to FarmerVICE: Your trusted guide to smarter, more sustainable livestock farming!"
+const WELCOME_SUB_TEXT = " Stay informed on government guidelines, discover practical strategies to improve yields, and learn how to reduce emissions while keeping your livestock healthier and more productive."
 const QUERY_TEXT = "Type your message here..."
 const BADGE_TEXT="Question"
 const QUERY_TITLE="What would you like to learn today?"
@@ -30,4 +31,4 @@ const COMMON_QUESTIONS:{ question: string; answer: string }[] = [
 
 
 
-export { WELCOME_TEXT, QUERY_TEXT, BADGE_TEXT, QUERY_TITLE, SEARCHING_TEXT, COMMON_QUESTIONS};
+export { WELCOME_TEXT, QUERY_TEXT, BADGE_TEXT, QUERY_TITLE, SEARCHING_TEXT, COMMON_QUESTIONS, WELCOME_SUB_TEXT};

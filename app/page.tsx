@@ -6,7 +6,7 @@ import { Badge } from "./components/ui/badge"
 import { ChatInput } from "./components/ui/chat/chat-input"
 import { ChatMessage } from "./components/ui/chat/chat-message"
 import { IconThumbsUp, IconThumbsDown } from "./components/icons/icon"
-import { WELCOME_TEXT, QUERY_TITLE, BADGE_TEXT, SEARCHING_TEXT, COMMON_QUESTIONS } from "./lib/constants"
+import { WELCOME_TEXT, QUERY_TITLE, BADGE_TEXT, SEARCHING_TEXT, COMMON_QUESTIONS,WELCOME_SUB_TEXT } from "./lib/constants"
 import ReactMarkdown from "react-markdown"
 import { ReferencesModal } from "./components/ui/modal"
 import { Reference, ChatMessage as ChatMessageType, RetrievedDoc } from './lib/types'
@@ -202,6 +202,13 @@ export default function Home() {
     ))
   }
 
+function loadDefaultQue(){
+  return   <div onClick={() => setShowWelcome(true)} className="hover:cursor-pointer mx-20 px-auto">
+  <Badge variant={"callToAction"} className="flex justify-end">frequently asked question</Badge>
+  {/* <Text variant="small" className="text-black">View Common Questions</Text> */}
+</div>
+}
+
   function renderChatMessages() {
     return messages.map((msg, index) => {
       const hasReferences = msg.references && msg.references.length > 0;
@@ -256,11 +263,16 @@ export default function Home() {
 
   return (
     <main className=""> 
-      {/* Welcome Text */}
+      {/* Welcome Text */}{
+        loadDefaultQue()
+      }
       {showWelcome && (
         <div>
-          <Text variant="subtitle" className="text-2xl text-black text-center">
-            {WELCOME_TEXT}
+        <Text variant="subtitle" className="text-3xl text-black mx-80 text-center">
+          {WELCOME_TEXT}
+        </Text>
+          <Text variant="small" className=" text-black my-3 mx-80 text-center">
+            {WELCOME_SUB_TEXT}
           </Text>
         </div>
       )}
